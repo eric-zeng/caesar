@@ -18,7 +18,8 @@ public class Caesar {
 		for (int i = 0; i < input.length(); i++) {
 			char current = input.charAt(i);
 			if (Character.isDigit(current)) {
-				output += ShiftDigit(current, digitShift);
+				output += ShiftDigit(Integer.parseInt(Character.toString(current)),
+				                     digitShift);
 			} else if(Character.getType(current) == Character.LOWERCASE_LETTER ||
 			          Character.getType(current) == Character.UPPERCASE_LETTER) {
 				output += ShiftChar(current, charShift);
@@ -38,10 +39,16 @@ public class Caesar {
 	 */
 	public static int ShiftDigit(int input, int shift) {
 	  if(input < 0 || input > 9){
-	    throw new IllegalArgumentException("Attempted to shift integer larger" +
-	                                       "than one base-10 digit");
+	    throw new IllegalArgumentException("Attempted to shift integer larger " +
+	                                       "than one base-10 digit: " + input);
 	  }
-		return (input + shift) % 10;
+	  int sum = input + shift;
+	  if (sum >= 0) {
+	    return (input + shift) % 10;
+	  } else {
+	    // Need case for negatives since Java mod arithmetic is weird
+	    return ((sum % 10) + 10) % 10;
+	  }
 	}
 	
 	/**
@@ -65,8 +72,12 @@ public class Caesar {
 		
 		// Get number of letter, where A=0 and Z=25, for easier modulo arithmetic
 		int inputLetter = (int) input - offset;
-		int outputLetter = (inputLetter + shift) % 26;
-		// Convert back to codepoint
-		return (char) (outputLetter + offset);
+		int sum = inputLetter + shift;
+		if (sum >= 0) {
+		  return (char) (sum % 26 + offset);
+		} else {
+		  // Need case for negatives since Java mod arithmetic is weird
+		  return (char) (((sum % 26) + 26) % 26 + offset);
+		}
 	}
 }
