@@ -34,14 +34,9 @@ public class Caesar {
 	 * Encrypts the given digit using a Caesar cipher (right shift). 
 	 * @param input The digit to be encrypted.
 	 * @param shift The number of places the digit should be shifted by.
-	 * @throws IllegalArgumentException if the input is not a base-10 digit.
 	 * @return The encrypted digit.
 	 */
 	public static int ShiftDigit(int input, int shift) {
-	  if(input < 0 || input > 9){
-	    throw new IllegalArgumentException("Attempted to shift integer larger " +
-	                                       "than one base-10 digit: " + input);
-	  }
 	  int sum = input + shift;
 	  if (sum >= 0) {
 	    return (input + shift) % 10;
